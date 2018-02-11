@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block svg_icons %}
+	<symbol id="icon-pencil" viewBox="0 0 32 32">
+		<title>pencil</title>
+		<path d="M27 0c2.761 0 5 2.239 5 5 0 1.126-0.372 2.164-1 3l-2 2-7-7 2-2c0.836-0.628 1.874-1 3-1zM2 23l-2 9 9-2 18.5-18.5-7-7-18.5 18.5zM22.362 11.362l-14 14-1.724-1.724 14-14 1.724 1.724z"></path>
+	</symbol>
+	<symbol id="icon-checkmark" viewBox="0 0 32 32">
+		<title>checkmark</title>
+		<path d="M27 4l-15 15-7-7-5 5 12 12 20-20z"></path>
+	</symbol>
+{% endblock %}
+
+{% block content %}
+
+	{{ flash_messages() }}
+
+	<div class="card mt-2">
+		<div class="card-body">
+
+			<h4 class="text-center">Past week's forecast in...</h4>
+			<form action="{{ url_for('change_city') }}" method="POST">
+				<div class="d-flex justify-content-center">
+					<div class="col-6">
+						<div class="form-group">
+							<select name="city" id="city" class="form-control">
+								{% for city in cities %}
+									<option value="{{ city }}" {% if city == session['city'] %}selected{% endif %}>{{ city }}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<div class="row">
+				{% for day in data %}
+					<div class="col-4 my-2 d-flex align-items-stretch">
+						<div class="card w-100">
+							<div class="card-header">{{ day.dt.strftime('%A, %m/%d') }}</div>
+							<div class="card-body">
+								<div class="card-title">{{ day.summary }}</div>
+								<div class="card-subtitle mb-2">{{ day.dt.strftime('%I:%M %p') }}</div>
+								<div class="card-text">
+									<div>High: {{ day.temperatureHigh }}</div>
+									<div>Low: {{ day.temperatureLow }}</div>
+								</div>
+							</div>
+						</div>
+					</div>{# .col-6 #}
+				{% endfor %}
+			</div>{# .row #}
+
+		</div>{# .card-body #}
+	</div>{# .card #}
+
+{% endblock %}
+
+
+{% block script_tag %}
+	<script>
+		$(document).ready(function(){
+			
+			$('#city').change(function(){
+				$(this).closest('form').submit()
+			});
+
+		});
+	</script>
+{% endblock %}

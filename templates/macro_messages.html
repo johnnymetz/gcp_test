@@ -1,0 +1,22 @@
+<!-- Individual Alerts for every Flash Message -->
+{% macro flash_messages(flash_messages=get_flashed_messages(with_categories=True), center_message=True) -%}
+
+	{% if flash_messages %}
+  	{% for category, message in flash_messages %}
+  		{% if category == 'message' %}
+  			<p>{{ message }} --> This flash needs a <strong>CATEGORY</strong></p>
+  		{% else %}
+	  		<div class="alert alert-{{ category }} alert-dismissible {% if center_message %} text-center {% endif %}" role="alert">
+	  			{% if category in ['danger', 'warning'] %}
+	  				<svg class="icon"><use xlink:href="#icon-warning"></use></svg>
+	  			{% else %}
+	  				<svg class="icon"><use xlink:href="#icon-notification"></use></svg>
+	  			{% endif %}
+			    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			    {{ message }}
+			  </div>
+			{% endif %}
+  	{% endfor %}
+	{% endif %}
+
+{%- endmacro %}
