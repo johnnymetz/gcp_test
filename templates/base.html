@@ -32,12 +32,13 @@
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
   <div class="container">
-    <span class="navbar-brand">Weather Info</span>
+    <a href="{{ url_for('index') }}" class="navbar-brand">Weather Info</a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarContent">
       <div class="navbar-nav ml-auto">
+        {% block navbar_items %}{% endblock %}
         <button class="btn btn-outline-info" data-toggle="modal" data-target="#about">About</button>
       </div>
     </div>

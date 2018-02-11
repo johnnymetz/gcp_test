@@ -16,17 +16,19 @@ def get_weather_data(city):
 
     # Time machine request
     multiple_day_data = []
-    for days_back in range(7):
+    for days_back in range(2):
         # Day this week
         dt = datetime.datetime.now(tz=pytz.timezone(location.timezone)) - datetime.timedelta(days=days_back)
-        dt_isoformat = dt.isoformat(timespec='seconds')
+        # dt_isoformat = dt.isoformat(timespec='seconds')  # python3 only
+        dt_isoformat = dt.replace(microsecond=0).isoformat()
 
         # https://api.darksky.net/forecast/[key]/[latitude],[longitude],[time]
-        url = f'https://api.darksky.net/forecast/0050344aa077ab4bebd2bd0c63e18393/' \
-              f'{location.latitude},' \
-              f'{location.longitude},' \
-              f'{dt_isoformat}' \
-              f'?exclude=currently,minutely,hourly,flags,offset'
+        url = 'https://api.darksky.net/forecast/0050344aa077ab4bebd2bd0c63e18393/{},{},{}' \
+              '?exclude=currently,minutely,hourly,flags,offset'.format(
+            location.latitude,
+            location.longitude,
+            dt_isoformat
+        )
 
         r = requests.get(url).text
         data = json.loads(r)['daily']['data'][0]

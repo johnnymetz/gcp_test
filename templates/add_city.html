@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+
+{% block navbar_items %}
+	<a href="{{ url_for('index') }}" class="btn btn-outline-primary mr-2">Back to Index</a>
+{% endblock %}
+
+
+{% block content %}
+
+	{{ flash_messages() }}
+
+	<div class="d-flex justify-content-center">
+		<div class="col-6">
+			<div class="card mt-2">
+				<div class="card-body">
+					<h4 class="text-center">Add a new City</h4>
+					<form action="{{ url_for('add_city') }}" method="POST">
+						<div class="form-group">
+							<label for="city">Name:</label>
+							<input type="text" name="city" id="city" class="form-control" placeholder="Los Angeles" required>
+						</div>
+						<div class="form-group">
+							<label for="latitude">Latitude:</label>
+							<input type="number" name="latitude" id="latitude" class="form-control" placeholder="34.052234" required>
+						</div>
+						<div class="form-group">
+							<label for="longitude">Latitude:</label>
+							<input type="number" name="longitude" id="longitude" class="form-control" placeholder="-118.243685" required>
+						</div>
+						<div class="form-group">
+							<label for="timezone">Timezone:</label>
+							<select name="timezone" id="timezone" class="form-control" required>
+								{% for tz in common_timezones %}
+									<option value="{{ tz }}" {% if tz == 'America/Los_Angeles' %}selected{% endif %}>{{ tz }}</option>
+								{% endfor %}
+							</select>
+						</div>
+						<div class="text-center">
+							<button type="submit" class="btn btn-primary">Add</button>
+						</div>
+					</form>
+				</div>{# .card-body #}
+			</div>{# .card #}
+		</div>{# .col-6#}
+	</div>{# .row #}
+
+{% endblock %}
