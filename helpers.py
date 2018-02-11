@@ -1,10 +1,10 @@
-import requests
+import urllib2
 import datetime
 import pytz
 import json
 
 
-def get_weather_data(city, my_locations, number_of_days):
+def get_weather_data(api_key, city, my_locations, number_of_days):
     """
     Get weather data from the last several days, including today.
 
@@ -22,16 +22,17 @@ def get_weather_data(city, my_locations, number_of_days):
         dt_isoformat = dt.replace(microsecond=0).isoformat()  # py2 + py3 compatible
 
         # https://api.darksky.net/forecast/[key]/[latitude],[longitude],[time]
-        url = 'https://api.darksky.net/forecast/0050344aa077ab4bebd2bd0c63e18393/{},{},{}' \
+        url = 'https://api.darksky.net/forecast/{}/{},{},{}' \
               '?exclude=currently,minutely,hourly,flags,offset'.format(
+            api_key,
             location['latitude'],
             location['longitude'],
             dt_isoformat
         )
 
         # Grab data from weather api
-        r = requests.get(url).text
-        data = json.loads(r)['daily']['data'][0]
+        response = urllib2.urlopen(url).read()
+        data = json.loads(response)['daily']['data'][0]
 
         # Grab data points we want to display to user
         daily_data = {k: data[k] for k in ['summary', 'icon', 'temperatureHigh', 'temperatureLow', 'time']}

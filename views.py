@@ -12,10 +12,21 @@ def index():
         if k not in session:
             session[k] = default
     data = get_weather_data(
+        app.config.get('API_KEY'),
         session['city'],
         session['my_locations'],
         app.config.get('NUMBER_OF_DAYS')
     )
+    # data = []
+    # for _ in range(4):
+    #     day = {}
+    #     for k in ['temperatureHigh', 'temperatureLow']:
+    #         day[k] = 40
+    #     day['summary'] = 'some summary'
+    #     day['icon'] = 'partly-cloudy'
+    #     from datetime import datetime
+    #     day['dt'] = datetime.now()
+    #     data.append(day)
 
     # df = pd.DataFrame(data)
     # df.to_pickle('data.pickle')
@@ -50,8 +61,8 @@ def add_city():
     return render_template('add_city.html', common_timezones=pytz.common_timezones)
 
 
-@app.route('/clear')
-def clear():
-    session.clear()
-    flash('Session cleared', category='success')
-    return redirect(url_for('index'))
+# @app.route('/clear')
+# def clear():
+#     session.clear()
+#     flash('Session cleared', category='success')
+#     return redirect(url_for('index'))

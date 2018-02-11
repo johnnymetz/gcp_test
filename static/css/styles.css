@@ -2,10 +2,13 @@ body {
 	background-color: #ccc;
 }
 .alert {
-	margin-top: 10px;
+	margin: 10px 0;
 }
 .card-body {
   padding: 12px;
+}
+.m-top {
+  margin-top: 10px;
 }
 
 /* SVG ICONS */
