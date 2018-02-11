@@ -4,6 +4,9 @@ body {
 .alert {
 	margin-top: 10px;
 }
+.card-body {
+  padding: 12px;
+}
 
 /* SVG ICONS */
 .icon {
@@ -19,3 +22,7 @@ body {
 	top: 1px;
 }
 /* END SVG ICONS */
+
+.temp {
+  font-size: 1.5em;
+}

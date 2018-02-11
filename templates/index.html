@@ -29,14 +29,22 @@
 			<div class="row">
 				{% for day in data %}
 					<div class="col-4 my-2 d-flex align-items-stretch">
-						<div class="card w-100">
+						<div class="card w-100 border-info">
 							<div class="card-header">{{ day.dt.strftime('%A, %m/%d') }}</div>
-							<div class="card-body">
-								<div class="card-title">{{ day.summary }}</div>
-								<div class="card-subtitle mb-2">{{ day.dt.strftime('%I:%M %p') }}</div>
-								<div class="card-text">
+							<div class="card-body d-flex flex-column justify-content-between text-center">
+								<div><canvas id="icon{{ loop.index0 }}" class="text-center" width="64" height="64"></canvas></div>
+								<div class="mb-2">{{ day.summary }}</div>
+								<div class="d-flex justify-content-between">
+									<div>
+										<span class="temp">{{ day.temperatureHigh }}&deg;</span>
+									</div>
+									<div>
+										<span class="temp text-muted">{{ day.temperatureLow }}&deg;</span>
+									</div>
+									{#
 									<div>High: {{ day.temperatureHigh }}</div>
 									<div>Low: {{ day.temperatureLow }}</div>
+									#}
 								</div>
 							</div>
 						</div>
@@ -53,6 +61,14 @@
 {% block script_tag %}
 	<script>
 		$(document).ready(function(){
+
+			var skycons = new Skycons();
+			{% for day in data %}
+				var icon = {{ day.icon | tojson }};
+				skycons.add("icon" + {{ loop.index0 }}, icon);
+			{% endfor %}
+
+			skycons.play();
 			
 			$('#city').change(function(){
 				$(this).closest('form').submit()
