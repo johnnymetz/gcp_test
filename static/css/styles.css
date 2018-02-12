@@ -10,6 +10,9 @@ body {
 .m-top {
   margin-top: 10px;
 }
+.c3-ygrid-line line, .c3-ygrid-line text {
+  stroke: green;
+}
 
 /* SVG ICONS */
 .icon {

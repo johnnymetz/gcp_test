@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/c3.min.css') }}">
+{% endblock %}
+
 {% block navbar_items %}
 	<a href="{{ url_for('add_city') }}" class="btn btn-outline-primary mr-2">Add City</a>
 {% endblock %}
@@ -41,10 +45,6 @@
 									<div>
 										<span class="temp text-muted">{{ day.temperatureLow }}&deg;</span>
 									</div>
-									{#
-									<div>High: {{ day.temperatureHigh }}</div>
-									<div>Low: {{ day.temperatureLow }}</div>
-									#}
 								</div>
 							</div>
 						</div>
@@ -55,6 +55,18 @@
 		</div>{# .card-body #}
 	</div>{# .card #}
 
+	<div class="card m-top">
+		<div class="card-body">
+			<div id="chart"></div>
+		</div>
+	</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+	<script src="{{ url_for('static', filename='js/d3-v3.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/c3.min.js') }}"></script>
 {% endblock %}
 
 
@@ -69,6 +81,43 @@
 			{% endfor %}
 
 			skycons.play();
+
+			var chart = c3.generate({
+				bindto: '#chart',
+				data: {
+					columns: [
+						{{ chart_data.high_temps | tojson }},
+						{{ chart_data.low_temps | tojson }}
+					],
+					type: 'bar'
+				},
+				bar: {
+					width: {
+						ratio: 0.60
+					}
+				},
+				axis: {
+					x: {
+						label: {text: 'Date', position: 'outer-right'},
+						type: 'category',
+						categories: {{ chart_data.dates | tojson }}
+					},
+					y: {
+						label: {text: 'Temperature (F)', position: 'outer-middle'},
+						tick: {format: d3.format(',.0f')}
+					}
+				},
+				grid: {
+					x: {show: true},
+					y: {
+						show: true,
+						lines: [
+							{value: {{ chart_data.high_avg | round(2) }}, text: 'High average'},
+							{value: {{ chart_data.low_avg | round(2) }}, text: 'Low average'}
+						]
+					}
+				}
+			});
 			
 			$('#city').change(function(){
 				$(this).closest('form').submit()

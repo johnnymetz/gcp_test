@@ -34,9 +34,24 @@ def index():
     # df = pd.read_pickle('data.pickle')
     # data = df.to_dict(orient='records')
 
+    high_temps = [day['temperatureHigh'] for day in data]
+    low_temps = [day['temperatureLow'] for day in data]
+    high_avg = sum(high_temps) / len(high_temps)
+    low_avg = sum(low_temps) / len(low_temps)
+    dates = [day['dt'].strftime('%a, %m/%d') for day in data]
+
+    chart_data = {
+        'high_temps': ['Highs'] + high_temps,
+        'low_temps': ['Low'] + low_temps,
+        'high_avg': high_avg,
+        'low_avg': low_avg,
+        'dates': dates
+    }
+
     return render_template('index.html',
                            data=data,
-                           cities=session['my_locations'].keys()
+                           cities=session['my_locations'].keys(),
+                           chart_data=chart_data
                            )
 
 
