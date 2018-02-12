@@ -7,7 +7,7 @@ class BaseConfig(object):
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
-    NUMBER_OF_DAYS = 2
+    NUMBER_OF_DAYS = 4
 
 
 class TestingConfig(BaseConfig):
